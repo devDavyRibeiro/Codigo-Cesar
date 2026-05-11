@@ -10,7 +10,8 @@ async function main() {
     console.log('MONGO_URI não encontrado nas variáveis de ambiente');
     return;
   }
-  await mongoose.connect(process.env.MONGO_URI);
+  // Conectar com o mongo local sem o .env
+  await mongoose.connect('mongodb://localhost:27017/MyLocalDB');
   console.log('MongoDB conectado')
   User = mongoose.model('User',{
         nome: String,
