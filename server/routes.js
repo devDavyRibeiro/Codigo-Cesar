@@ -21,9 +21,9 @@ const authenticateToken = (req, res, next) => {
 router.post('/cadastrar', create);
 router.post('/login', login);
 
+router.use(authenticateToken);
 router.post('/criptografar', criptografarMensagem);
 router.post('/descriptografar', descriptografarMensagem);
-router.use(authenticateToken);
 
 router.get('/',usuariosAll)
 router.get('/:id', pegarUsuarioId);
