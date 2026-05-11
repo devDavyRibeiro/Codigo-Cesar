@@ -1,6 +1,6 @@
 import express from 'express'
 import { User } from './db.js';
-import { create, login, pegarUsuarioId,usuariosAll,criptografarMensagem} from './user.controller.js';
+import { create, login, pegarUsuarioId,usuariosAll,criptografarMensagem,descriptografarMensagem} from './user.controller.js';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
