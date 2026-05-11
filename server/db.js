@@ -11,9 +11,10 @@ async function main() {
         senha:String
     })
   Hash = mongoose.model('Hash',{
-    mensagem: String,
+    idUser: String,
     passo: Number,
-    hash: String
+    hash: String,
+    usado: { type: Boolean, default: false }
   })
 }
 export {User, Hash}

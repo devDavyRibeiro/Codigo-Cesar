@@ -1,4 +1,4 @@
-import { User } from './db.js';
+import { User,Hash } from './db.js';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -97,10 +97,13 @@ export const criptografarMensagem = async (req, res) => {
 
         const hash = await gerarHash(resultado);
 
+        const hashDoc = new Hash({ idUser: req.user.id, passo, hash });
+        await hashDoc.save();
+
         res.status(200).json({
             message: 'Mensagem criptografada com sucesso',
             resultado,
-            hash
+            ha
         });
 
     } catch (error) {
@@ -110,6 +113,47 @@ export const criptografarMensagem = async (req, res) => {
             status: 500
         });
     }
+};
+
+export const descriptografarMensagem = async (req, res) => {
+  try {
+    const { hash,mensagem } = req.body;
+    if (!hash || !mensagem) {
+      return res.status(400).json({
+        message: 'Hash e mensagem são obrigatórios',
+        err: 'Hash e mensagem são obrigatórios',
+        status: 400
+      });
+    }
+    const hashDoc = await Hash.findOne({ hash });
+    if (!hashDoc) {
+      return res.status(404).json({
+        message: 'Hash não encontrado',
+        err: 'Hash não encontrado',
+        status: 404
+      });
+    }
+    if (hashDoc.usado) {
+      return res.status(400).json({
+        message: 'Hash já foi usado',
+        err: 'Hash já foi usado',
+        status: 400
+      });
+    }
+    const resultado = descriptografar(mensagem, Number(hashDoc.passo));
+    hashDoc.usado = true;
+    await hashDoc.save();
+    res.status(200).json({
+      message: 'Mensagem descriptografada com sucesso',
+      resultado
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Erro no servidor",
+      err: error.message,
+      status: 500,
+    });
+  }
 };
 
 function criptografar(mensagem="", passo=10){

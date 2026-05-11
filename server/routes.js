@@ -22,6 +22,7 @@ router.post('/cadastrar', create);
 router.post('/login', login);
 
 router.post('/criptografar', criptografarMensagem);
+router.post('/descriptografar', descriptografarMensagem);
 router.use(authenticateToken);
 
 router.get('/',usuariosAll)
