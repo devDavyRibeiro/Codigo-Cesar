@@ -9,7 +9,7 @@ app.use(cors({
   optionsSuccessStatus: 200
 }))
 app.use(bodyParser.json())
-app.use('/user/', router)
+app.use('/user', router)
 
 app.listen(3000,()=>{
     console.log('Server iniciado')

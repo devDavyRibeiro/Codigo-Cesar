@@ -1,6 +1,6 @@
 import express from 'express'
 import { User } from './db.js';
-import { create, login, pegarUsuarioId,usuariosAll} from './user.controller.js';
+import { create, login, pegarUsuarioId,usuariosAll,criptografarMensagem} from './user.controller.js';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
@@ -20,9 +20,13 @@ const authenticateToken = (req, res, next) => {
 
 router.post('/cadastrar', create);
 router.post('/login', login);
+
+router.post('/criptografar', criptografarMensagem);
 router.use(authenticateToken);
+
 router.get('/',usuariosAll)
 router.get('/:id', pegarUsuarioId);
+
 
 
 export default router
